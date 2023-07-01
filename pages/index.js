@@ -1,15 +1,12 @@
 import Image from "next/image";
 import Link from "next/link"
-import Head from "next/head";
 
 export default function Home() {
   return(
     <>
-    <Head>
       <title>{`WATCH - Watch together, even when apart`}</title>
       <meta name='description' content='WATCH - Watch together, even when apart'></meta>
       <Link href={'../public/image.png'}></Link>
-    </Head>
 
     <main>
       <div>
