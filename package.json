@@ -30,5 +30,9 @@
     "sweetalert2": "^11.7.12",
     "tailwindcss": "3.3.2",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.8",
+    "prettier-plugin-tailwindcss": "^0.3.0"
   }
 }

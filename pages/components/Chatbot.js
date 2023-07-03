@@ -102,7 +102,7 @@ const Chatbot = () => {
             />
             <h1>Chat bot here</h1>
             <div className='flex justify-center'>
-            <button onClick={fireName} className="inline-flex text-white bg-indigo-500 border-0 py-1 px-4 focus:outline-none hover:bg-indigo-600 rounded">HAJI-MEI</button>
+            <button onClick={fireName} className="inline-flex text-white bg-indigo-500 border-0 py-1 px-4 focus:outline-none hover:bg-indigo-600 rounded">Start</button>
             </div>
         </>
     )
