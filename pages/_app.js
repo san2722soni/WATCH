@@ -1,5 +1,4 @@
 import '@/styles/globals.css'
-import Head from 'next/head'
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react'
 import { Rubik } from 'next/font/google'
@@ -29,12 +28,12 @@ export default function App({ Component, pageProps }) {
 
   return (
     <>
-        <LoadingBar
-          color='#BD0000'
-          progress={progress}
-          waitingTime={400}
-          onLoaderFinished={() => setProgress(0)}
-        />
+      <LoadingBar
+        color='#BD0000'
+        progress={progress}
+        waitingTime={400}
+        onLoaderFinished={() => setProgress(0)}
+      />
       <main className={rubik.className}>
         <Navbar />
         <Component {...pageProps} />
