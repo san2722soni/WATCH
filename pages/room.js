@@ -123,24 +123,24 @@ const Room = () => {
 				{hasWindow && (
 					<ReactPlayer
 						ref={playerRef}
-						url="https://youtu.be/Iqt3Ih18VDk"
+						url="https://youtu.be/mZsPXkbGVKk"
 						onReady={handlePlayerReady}
 						config={{ youtube: { playerVars: { disablekb: 1 } } }}
-						className="pointer-events-none aspect-video"
+						className=" aspect-video"
 						width="100%"
 						height="100%"
 						playing={play}
 						onProgress={handleProgressChange}
 						onPlay={() => setPlay(true)}
 						onPause={() => setPlay(false)}
+						
 					/>
 				)}
 				{/* Controls */}
 				{isPlayerReady && (
 					<div
-						className={`flex items-center gap-3 ${
-							isFullScreen && "px-5 py-2"
-						}`}
+						className={`flex items-center gap-3 ${isFullScreen && "px-5 py-2"
+							}`}
 					>
 						<button onClick={() => setPlay(!play)}>
 							{play ? (
