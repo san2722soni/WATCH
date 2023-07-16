@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { FaLaptopCode } from "react-icons/fa";
 import { RiAccountCircleLine } from "react-icons/ri";
 
@@ -15,6 +16,7 @@ const rubik = Rubik({
 const Navbar = () => {
 	// Manipulating icon according to sign-up status
 	const [icon, setIcon] = useState(false);
+	const router = useRouter();
 
 	// Cheking if user already logged in
 	useEffect(() => {
@@ -25,40 +27,48 @@ const Navbar = () => {
 	return (
 		<header className="text-white">
 			<div
-				className={`container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center justify-between ${rubik.className} font-sans`}
+				className={`container mx-auto flex flex-col flex-wrap items-center justify-between p-5 md:flex-row ${rubik.className} font-sans`}
 			>
 				<Link href={"/"}>
-					<FaLaptopCode className="text-5xl hover:text-red-600 cursor-pointer"></FaLaptopCode>
+					<FaLaptopCode className="cursor-pointer text-5xl hover:text-red-600"></FaLaptopCode>
 				</Link>
-				<nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center ml-10">
+				<nav className="ml-10 flex flex-wrap items-center justify-center text-base md:ml-auto md:mr-auto">
 					<Link
 						href="/"
-						className="mr-10 hover:text-red-600 cursor-pointer"
+						className={`${
+							router.pathname === "/" ? "text-red-600" : ""
+						} mr-10 cursor-pointer hover:text-red-600`}
 					>
 						HOME
 					</Link>
 					<Link
 						href="/about"
-						className="mr-10 hover:text-red-600 cursor-pointer"
+						className={`${
+							router.pathname === "/about" ? "text-red-600" : ""
+						} mr-10 cursor-pointer hover:text-red-600`}
 					>
 						ABOUT
 					</Link>
 					<Link
 						href="/room"
-						className="mr-10 hover:text-red-600 cursor-pointer"
+						className={`${
+							router.pathname === "/room" ? "text-red-600" : ""
+						} mr-10 cursor-pointer hover:text-red-600`}
 					>
 						ROOM
 					</Link>
 					<Link
 						href="/contact"
-						className="mr-10 hover:text-red-600 cursor-pointer"
+						className={`${
+							router.pathname === "/contact" ? "text-red-600" : ""
+						} mr-10 cursor-pointer hover:text-red-600`}
 					>
 						CONTACT
 					</Link>
 				</nav>
 				<Link href={"/signup"}>
 					{!icon && (
-						<button className="hover:bg-red-800 inline-flex items-center border-0 bg-[#BD0000] py-1 px-3 rounded-full text-lg mt-4 md:mt-0">
+						<button className="mt-4 inline-flex items-center rounded-full border-0 bg-[#BD0000] px-3 py-1 text-lg hover:bg-red-800 md:mt-0">
 							Get-Started
 							<svg
 								fill="none"
@@ -66,7 +76,7 @@ const Navbar = () => {
 								strokeLinecap="round"
 								strokeLinejoin="round"
 								strokeWidth="2"
-								className="w-4 h-4 ml-1"
+								className="ml-1 h-4 w-4"
 								viewBox="0 0 24 24"
 							>
 								<path d="M5 12h14M12 5l7 7-7 7"></path>
@@ -76,7 +86,7 @@ const Navbar = () => {
 
 					{icon && (
 						<button className="">
-							<RiAccountCircleLine className="text-5xl hover:text-red-600 cursor-pointer" />
+							<RiAccountCircleLine className="cursor-pointer text-5xl hover:text-red-600" />
 						</button>
 					)}
 				</Link>

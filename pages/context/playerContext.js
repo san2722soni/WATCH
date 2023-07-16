@@ -11,6 +11,14 @@ export const PlayerState = ({ children }) => {
 	const [url, setUrl] = useState("");
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 	const [speed, setSpeed] = useState(1);
+	const [playtime, setPlaytime] = useState(0);
+	const [activeMenu, setActiveMenu] = useState("main");
+	const [members, setMembers] = useState([
+		"Nishil",
+		"Nishil ki bandi",
+		"Aswin",
+		"Aswin ki bandi",
+	]);
 
 	const player = {
 		hasWindow,
@@ -29,6 +37,12 @@ export const PlayerState = ({ children }) => {
 		setIsDropdownOpen,
 		speed,
 		setSpeed,
+		playtime,
+		setPlaytime,
+		activeMenu,
+		setActiveMenu,
+		members,
+		setMembers,
 	};
 
 	return (

@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import { Rubik } from "next/font/google";
 import Navbar from "./components/Navbar";
 import LoadingBar from "react-top-loading-bar";
+
 import { PlayerState } from "./context/playerContext";
 
 const rubik = Rubik({
