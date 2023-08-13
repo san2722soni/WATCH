@@ -19,11 +19,13 @@ import {
 	BsPlayCircle,
 	BsArrowLeft,
 	BsCheck2,
+	BsLink45Deg,
 } from "react-icons/bs";
 import { MdSettings, MdKeyboardArrowDown } from "react-icons/md";
 import ReactPlayer from "react-player";
-import { Popover, Transition } from "@headlessui/react";
+import { Popover, Transition, Tab } from "@headlessui/react";
 import { playerContext } from "./context/playerContext";
+import debounce from "lodash.debounce";
 
 const poppins = Poppins({
 	weight: ["500", "600", "700", "800"],
@@ -60,10 +62,13 @@ const Room = () => {
 		playtime,
 		setPlaytime,
 		setActiveMenu,
+		fileUrl,
+		setFileUrl,
 	} = useContext(playerContext);
 
 	const [showControls, setShowControls] = useState(true);
 	const [isMouseVisible, setIsMouseVisible] = useState(true);
+	const [isArrowSeeking, setIsArrowSeeking] = useState(false);
 	const timerRef = useRef(null);
 
 	const playerRef = useRef();
@@ -71,6 +76,7 @@ const Room = () => {
 	const vidSectionRef = useRef();
 	const fullScreenBtnRef = useRef();
 	const volumeInputRef = useRef();
+	const urlInputRef = useRef();
 	const controlsDeactivationTime = 3000;
 
 	const handlePlayerReady = () => {
@@ -87,10 +93,18 @@ const Room = () => {
 	const handleProgressChange = () => {
 		// get the current time of video
 		// update the value of range input to current time of video
-		rangeInputRef.current.value = Math.ceil(
-			playerRef.current.getCurrentTime()
-		);
-		setPlaytime(Math.floor(playerRef.current.getCurrentTime()));
+		if (rangeInputRef.current) {
+			rangeInputRef.current.value = Math.round(
+				playerRef.current.getCurrentTime()
+			);
+			if (
+				formatTime(playerRef.current.getDuration()) ===
+				formatTime(Math.round(playerRef.current.getCurrentTime()))
+			) {
+				setPlay(false);
+			}
+		}
+		setPlaytime(Math.round(playerRef.current.getCurrentTime()));
 	};
 
 	const handleFullScreen = (e) => {
@@ -151,14 +165,15 @@ const Room = () => {
 				document.fullscreenElement === vidSectionRef.current
 			);
 		};
-		const handleKeyPress = (event) => {
+
+		// using debounce to prevent this from firing a lot of times if the arrow keys are pressed rapidly.
+		const handleKeyPress = debounce((event) => {
 			const activeElement = document.activeElement;
 			const excludedTags = ["INPUT", "TEXTAREA", "SELECT"];
 			if (
 				excludedTags.includes(activeElement.tagName) &&
 				!(activeElement.type === "range")
 			) {
-				console.log(activeElement.type);
 				return;
 			}
 
@@ -175,7 +190,7 @@ const Room = () => {
 				default:
 					break;
 			}
-		};
+		}, 250);
 
 		const handleMouseMove = () => {
 			clearTimeout(timerRef.current);
@@ -206,6 +221,7 @@ const Room = () => {
 				handleFullScreenChange
 			);
 			document.removeEventListener("keydown", handleKeyPress);
+			handleKeyPress.cancel();
 			if (vidSectionRef.current) {
 				vidSectionRef.current.removeEventListener(
 					"mousemove",
@@ -219,48 +235,138 @@ const Room = () => {
 	// TODO: Implement Cursor hide when showControls is false
 
 	return (
-		<main className="mb-5 mt-7 flex flex-col gap-6 px-10 md:flex-row">
+		<main className="mb-5 mt-7 flex flex-col gap-6 px-5 md:flex-row">
 			{/* Section 1: Video */}
 			<div
 				className={`flex w-full flex-col gap-2 md:w-2/3 ${
 					isFullScreen ? (isMouseVisible ? "" : "cursor-none") : ""
 				}`}
 			>
-				<label className="text-gray-300" htmlFor="video-url">
-					Video URL
-				</label>
-				<input
-					onChange={(e) => setUrl(e.target.value)}
-					type="text"
-					className="w-full rounded-md border border-gray-400 bg-transparent px-3 py-2 font-light text-white outline-none placeholder:font-light"
-					placeholder="Enter Video URL here."
-				/>
+				<div>
+					<Tab.Group>
+						<Tab.List className="flex h-12 items-center gap-4 rounded-md bg-gray-200 p-2">
+							<Tab as={Fragment}>
+								{({ selected }) => (
+									<button
+										className={`${
+											selected ? "bg-black/20" : ""
+										} rounded-md px-2 py-1 outline-none transition-colors hover:bg-black/20`}
+									>
+										Video URL
+									</button>
+								)}
+							</Tab>
+							<Tab as={Fragment}>
+								{({ selected }) => (
+									<button
+										className={`${
+											selected ? "bg-black/20" : ""
+										} rounded-md px-2 py-1 outline-none transition-colors hover:bg-black/20`}
+									>
+										Custom Video
+									</button>
+								)}
+							</Tab>
+						</Tab.List>
+						<Tab.Panels>
+							<Tab.Panel className="mt-2 flex gap-2">
+								<input
+									ref={urlInputRef}
+									type="text"
+									className="w-full rounded-md border border-gray-400 bg-transparent px-3 py-2 font-light text-white outline-none placeholder:font-light"
+									placeholder="Enter Video URL here."
+								/>
+								<button
+									onClick={(e) => {
+										setUrl(urlInputRef.current.value);
+										setFileUrl("");
+										console.log(e.target.value);
+									}}
+									className="rounded-md bg-red-600 px-2 py-1 text-white"
+								>
+									Submit
+								</button>
+							</Tab.Panel>
+							<Tab.Panel className="mt-2">
+								<label
+									htmlFor="file-choose"
+									className="cursor-pointer rounded-md bg-red-600 px-3 py-2 text-left text-white"
+								>
+									Choose File
+									<input
+										accept="video/*"
+										onChange={(e) => {
+											const file = e.target.files[0];
+											if (file) {
+												const videoUrl =
+													URL.createObjectURL(file);
+												setFileUrl(videoUrl);
+												setUrl("");
+											}
+										}}
+										id="file-choose"
+										type="file"
+										className="w-0 opacity-0"
+									/>
+								</label>
+							</Tab.Panel>
+						</Tab.Panels>
+					</Tab.Group>
+				</div>
 				<section
 					ref={vidSectionRef}
-					className="relative flex w-full flex-col gap-3"
+					className="relative flex w-full select-none flex-col gap-3"
 				>
 					{hasWindow && (
-						<ReactPlayer
-							ref={playerRef}
-							url={url}
-							onReady={handlePlayerReady}
-							config={{
-								youtube: { playerVars: { disablekb: 1 } },
-							}}
-							className="pointer-events-none aspect-video"
-							width="100%"
-							height="100%"
-							playing={play}
-							onProgress={handleProgressChange}
-							onPlay={() => setPlay(true)}
-							onPause={() => setPlay(false)}
-							volume={volume}
-							playbackRate={speed}
-						/>
+						<>
+							{url && (
+								<ReactPlayer
+									ref={playerRef}
+									url={url}
+									onReady={handlePlayerReady}
+									config={{
+										youtube: {
+											playerVars: { disablekb: 1 },
+										},
+									}}
+									className="pointer-events-none aspect-video"
+									width="100%"
+									height="100%"
+									playing={play}
+									onProgress={handleProgressChange}
+									onPlay={() => setPlay(true)}
+									onPause={() => setPlay(false)}
+									volume={volume}
+									playbackRate={speed}
+								/>
+							)}
+							{fileUrl && (
+								<ReactPlayer
+									ref={playerRef}
+									url={fileUrl}
+									onReady={handlePlayerReady}
+									className="pointer-events-none aspect-video"
+									width="100%"
+									height="100%"
+									playing={play}
+									onProgress={handleProgressChange}
+									onPlay={() => setPlay(true)}
+									onPause={() => setPlay(false)}
+									volume={volume}
+									playbackRate={speed}
+									config={{
+										file: {
+											attributes: { controls: false },
+										},
+									}}
+								/>
+							)}
+						</>
 					)}
 					{/* Controls */}
 					{isPlayerReady &&
-						ReactPlayer.canPlay(url) &&
+						ReactPlayer.canPlay(url) |
+							ReactPlayer.canPlay(fileUrl) &&
 						playerRef.current && (
 							<div
 								className={`${
@@ -283,7 +389,7 @@ const Room = () => {
 											<BsFillPlayFill className="text-3xl text-white" />
 										)}
 									</button>
-									<button>
+									<button className="hidden md:block">
 										{volume > 0.5 ? (
 											<BsVolumeUpFill className="text-3xl text-white" />
 										) : volume > 0 ? (
@@ -293,7 +399,7 @@ const Room = () => {
 										)}
 									</button>
 									<input
-										className="volume-input w-1/5 accent-red-600 "
+										className="volume-input hidden w-1/5 accent-red-600 md:block"
 										type="range"
 										min={0}
 										max={1}
@@ -310,7 +416,7 @@ const Room = () => {
 										)}
 									</span>
 									<div className="absolute bottom-10 right-5">
-										<DropdowMenu />
+										<DropdownMenu />
 									</div>
 									<button
 										onClick={() => {
@@ -338,23 +444,8 @@ const Room = () => {
 						)}
 				</section>
 			</div>
-			{/* Section 2: Room Info */}
-			{/* <section className="flex flex-col gap-2 text-white">
-				<h3 className={`${poppins.className} font- text-2xl`}>
-					Members
-				</h3>
-				<ol
-					className={`flex flex-col gap-2 font-light ${rubik.className} list-inside list-decimal`}
-				>
-					<li>Nishil</li>
-					<li>Nishil ki bandi (Future)</li>
-					<li>Aswin</li>
-					<li>Aswin ki bandi (Future)</li>
-				</ol>
-			</section> */}
-			{/* Section 3: Chat Section */}
 			<section
-				className={`${poppins.className} relative flex min-h-[20rem] w-full flex-col rounded-md bg-white/30 text-center text-xl text-white md:w-1/3`}
+				className={`${poppins.className} relative my-8 flex h-[30rem] w-full flex-col rounded-md bg-white/30 text-center text-xl text-white md:w-1/3`}
 			>
 				<h3 className="border-b p-2">Chat Room</h3>
 				<input
@@ -366,17 +457,16 @@ const Room = () => {
 					<MembersDropdown />
 				</div>
 			</section>
-			{/* <p className="text-white">
-				// TODO: Implement Cursor hide when showControls is false
-			</p> */}
 		</main>
 	);
 };
 
-const DropdowMenu = () => {
+const DropdownMenu = () => {
 	const speeds = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
-	const { speed, setSpeed, isDropdownOpen, activeMenu, setActiveMenu } =
+	const { speed, setSpeed, isDropdownOpen, activeMenu, setActiveMenu, url } =
 		useContext(playerContext);
+
+	const [icon, setIcon] = useState(<BsLink45Deg />);
 	const DropdownItem = (props) => {
 		return (
 			<button
@@ -384,7 +474,7 @@ const DropdowMenu = () => {
 					props.goToMenu && setActiveMenu(props.goToMenu);
 					props.onClickEvent && props.onClickEvent();
 				}}
-				className="flex w-44 items-center gap-2 p-3 text-white hover:bg-gray-400"
+				className="flex w-44 items-center gap-2 p-3 text-white hover:bg-gray-700"
 			>
 				<span>{props.leftIcon}</span>
 				<span>{props.name}</span>
@@ -435,6 +525,22 @@ const DropdowMenu = () => {
 							leftIcon={<BsPlayCircle />}
 							name="PlayBack Speed"
 						/>
+						{url && (
+							<DropdownItem
+								// goToMenu="Playback Speed"
+								onClickEvent={() => {
+									navigator.clipboard.writeText(url);
+									setIcon(<BsCheck2 />);
+									setTimeout(() => {
+										setIcon(
+											<BsLink45Deg className="text-lg" />
+										);
+									}, 1500);
+								}}
+								leftIcon={icon}
+								name="Copy Video URL"
+							/>
+						)}
 					</Transition>
 					<Transition
 						show={activeMenu === "Playback Speed"}

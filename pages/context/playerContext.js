@@ -19,6 +19,7 @@ export const PlayerState = ({ children }) => {
 		"Aswin",
 		"Aswin ki bandi",
 	]);
+	const [fileUrl, setFileUrl] = useState("");
 
 	const player = {
 		hasWindow,
@@ -43,6 +44,8 @@ export const PlayerState = ({ children }) => {
 		setActiveMenu,
 		members,
 		setMembers,
+		fileUrl,
+		setFileUrl,
 	};
 
 	return (
