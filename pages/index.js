@@ -26,7 +26,7 @@ export default function Home() {
 					</h2>
 
 					<div className="mt-10 flex flex-col gap-5 px-5 md:flex-row">
-						<div className="movie h-[25rem] w-full cursor-pointer rounded-md bg-[#E4E4E4] shadow-white-glow shadow-white/40 md:w-9/12">
+						<div className="movie h-[25rem] w-full cursor-pointer rounded-md bg-[#E4E4E4] shadow-white-glow shadow-white/40 md:w-9.5/12">
 							{/* TODO */}
 						</div>
 						{/* <Chatbot /> */}

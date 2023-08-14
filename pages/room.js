@@ -26,6 +26,7 @@ import ReactPlayer from "react-player";
 import { Popover, Transition, Tab } from "@headlessui/react";
 import { playerContext } from "./context/playerContext";
 import debounce from "lodash.debounce";
+import Chat from "./components/chat";
 
 const poppins = Poppins({
 	weight: ["500", "600", "700", "800"],
@@ -444,19 +445,8 @@ const Room = () => {
 						)}
 				</section>
 			</div>
-			<section
-				className={`${poppins.className} relative my-8 flex h-[30rem] w-full flex-col rounded-md bg-white/30 text-center text-xl text-white md:w-1/3`}
-			>
-				<h3 className="border-b p-2">Chat Room</h3>
-				<input
-					type="text"
-					className="mt-auto w-full bg-black/50 p-3 text-sm font-light outline-none placeholder:text-gray-300"
-					placeholder="Type your message here."
-				/>
-				<div className="absolute -top-10 right-0">
-					<MembersDropdown />
-				</div>
-			</section>
+			{/* {Section 3: Chat Section} */}
+			<Chat MembersDropdown={MembersDropdown}/>
 		</main>
 	);
 };
