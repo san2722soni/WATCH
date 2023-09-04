@@ -26,7 +26,8 @@ import ReactPlayer from "react-player";
 import { Popover, Transition, Tab } from "@headlessui/react";
 import { playerContext } from "./context/playerContext";
 import debounce from "lodash.debounce";
-import Chat from "./components/chat";
+import Chat from "./components/Chat/chat";
+
 
 const poppins = Poppins({
 	weight: ["500", "600", "700", "800"],

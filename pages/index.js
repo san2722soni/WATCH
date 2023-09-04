@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import Chatbot, { fireName } from "./components/Chatbot";
-import Cb from "./components/Cb";
+import Chatbot, { fireName } from "./components/ChatBot/Chatbot";
+import Cb from "./components/ChatBot/Cb";
 
 export default function Home() {
 	// const [start, setStart] = useState(false);
@@ -32,7 +32,6 @@ export default function Home() {
 						{/* <Chatbot /> */}
 						<Cb />
 					</div>
-					{/* <button onClick={()=>{setStart(true)}} className="inline-flex text-white bg-indigo-500 border-0 py-1 px-4 focus:outline-none hover:bg-indigo-600 rounded mt-5">HAJI-MEI</button> */}
 				</div>
 			</main>
 		</>

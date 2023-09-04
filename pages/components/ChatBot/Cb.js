@@ -131,7 +131,7 @@ const Cb = () => {
 				pauseOnHover
 				theme="light"
 			/>
-			<div className="flex max-h-[25rem] min-h-[15rem] w-full flex-col self-end rounded-md bg-white/30 md:h-auto md:w-1/3 md:self-auto">
+			<div className="flex max-h-[25rem] min-h-[15rem] w-full flex-col self-end rounded-md bg-[#202020] md:h-auto md:w-1/3 md:self-auto">
 				<div className="flex h-full flex-col gap-3 overflow-y-auto overflow-x-hidden p-5">
 					{messages.map((msg, index) => {
 						return (
