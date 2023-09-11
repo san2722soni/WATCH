@@ -18,10 +18,18 @@ app.use(cors());
 app.get("/api/socket", (req, res) => {
 
   io.on("connection", (socket) => {
-    console.log("SOCKET IDS", socket.id);
+    const id = socket.handshake.query.id;
+    socket.join(id);
 
-    socket.on("send-message", (message) => {
-      console.log("Message:", message);
+    socket.on("send-message", ({ recipients, text}) => {
+      recipients.forEach(recipient => {
+        // checking if sender is selected from list of recipients
+        const newRecipients = recipients.filter(r !== recipient); 
+        newRecipient.push(id);
+        socket.broadcast.to(recipient).emit('receive-message', {
+          recipients: newRecipients, sender: id, text
+        })
+      })
     });
   });
 });

@@ -14,7 +14,7 @@ const Contacts = ({ style, id }) => {
   const { editContact } = useContacts();
   const { deleteContact } = useContacts();
 
-  const { createConversation } = useConversations();
+  const { conversations, createConversation } = useConversations();
 
   // Saving contact details onto local storage via createContact() hook.
   const handleSubmit = (values) => {
@@ -34,6 +34,7 @@ const Contacts = ({ style, id }) => {
 
   // -- Validations
   const Validations = (inp1, inp2, shouldCompareID) => {
+    
     // Cheking for empty and fake space fields
     if (inp1.replace(/\s/g, "") == "" || inp2.replace(/\s/g, "") == "") {
       Swal.showValidationMessage("Please enter both feilds");
@@ -203,17 +204,18 @@ const Contacts = ({ style, id }) => {
             }
           }
         }
-
-        console.log(selectedContactIds);
-        createConversation(selectedContactIds);
-
+        
         // Showing validation message for selection atleast 3
         if (groupEligiblity < 3) {
           Swal.showValidationMessage("Select atleast 3 to create group");
         }
+        else {
+          createConversation(selectedContactIds);
+        }
       },
     });
 
+    console.log(accept)
     accept && Swal.fire("Group created Successfully!");
   };
 
@@ -319,7 +321,7 @@ const Contacts = ({ style, id }) => {
         </div>
 
         {/* Contacts list */}
-        <ul class="mt-2 flex w-full flex-col">
+        <ul class="mt-2 flex w-1/2 flex-col">
           {contacts.map((contact) => {
             return (
               <li

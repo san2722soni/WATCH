@@ -8,18 +8,18 @@ export function useContacts() {
 }
 
 export function ContactsProvider({ children }) {
-  const [contacts, setContatcts] = useLocalStorage("contacts", []);
+  const [contacts, setContacts] = useLocalStorage("contacts", []);
 
-  function createContact(id, name) {
-    setContatcts((prevContacts) => {
+ function createContact (id, name) {
+     setContacts((prevContacts) => {
       return [...prevContacts, { id, name }];
     });
   }
-
+  
   function editContact(id, name) {
     contacts.map((contact, index) => {
       if (id === contact.id) {
-        setContatcts((prevContacts) => {
+        setContacts((prevContacts) => {
           prevContacts[index].name = name;
           return [...prevContacts];
         });
@@ -33,8 +33,7 @@ export function ContactsProvider({ children }) {
       return id !== contact.id;
     });
 
-    console.log(LeftOutContacts)
-    setContatcts(prevContacts => {
+    setContacts(prevContacts => {
       return [...LeftOutContacts]
     });
   }
