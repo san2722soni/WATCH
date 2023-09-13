@@ -72,6 +72,7 @@ const Room = () => {
   const [isMouseVisible, setIsMouseVisible] = useState(true);
   const [isArrowSeeking, setIsArrowSeeking] = useState(false);
   const [message, setMessage] = useState("");
+  const [room, setRoom] = useState("");
   const timerRef = useRef(null);
 
   const playerRef = useRef();
@@ -81,26 +82,22 @@ const Room = () => {
   const volumeInputRef = useRef();
   const urlInputRef = useRef();
   const ChatMessage = useRef();
+  const RoomId  = useRef();
   const controlsDeactivationTime = 3000;
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/socket")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("data from fetch", data);
-      });
-  }, []);
-
+  //--- HERE IS DEMO CODE OF SOCKET APPLICAION [ refer for UI line b/w - 295-310 ];
   useMemo(() => {
     const socket = io("http://localhost:8080");
-	
-	socket.on("connect", ()=>{
-		console.log(`you connected with id:`, socket.id)	
-		socket.emit("send-message", message);
-	})
-	socket.on("receive-message", msg => {
-		console.log(msg)
-	})
+
+    socket.on("connect", () => {
+      console.log(`you connected with id:`, socket.id)
+      console.log('Room id:', room)
+      socket.emit("send-message", message, room);
+    });
+
+    socket.on("r-m", (msg) => {
+      setMessage(msg);
+    });
   }, [message]);
 
   const handlePlayerReady = () => {
@@ -300,8 +297,10 @@ const Room = () => {
                   Submit
                 </button>
               </Tab.Panel>
-			  <div className="mt-2 flex gap-2">
-			  <input
+
+              {/* DEMO SOCKET APP UI HERE */}
+              <div className="mt-2 flex gap-2">
+                <input
                   type="text"
                   className="p-3"
                   placeholder="Text"
@@ -310,12 +309,21 @@ const Room = () => {
                 <button
                   onClick={(e) => {
                     setMessage(ChatMessage.current.value);
-                    console.log(message);
+                    setRoom(RoomId.current.value);
+                    console.log("Message and room id sending ",message, room);
                   }}
                   className="rounded-md bg-red-600 px-2 py-1 text-white"
-                >SEND</button>
-				<input type="text" readOnly value={message}/>
-			  </div>
+                >
+                  SEND
+                </button>
+                <input type="text" readOnly value={message} />
+                <input
+                  type="text"
+                  className="p-3"
+                  placeholder="RoomID"
+                  ref={RoomId}
+                />
+              </div>
               <Tab.Panel className="mt-2">
                 <label
                   htmlFor="file-choose"
