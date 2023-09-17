@@ -50,7 +50,7 @@ const Navbar = () => {
 						ABOUT
 					</Link>
 					<Link
-						href="/room"
+						href="/joinRoom"
 						className={`${
 							router.pathname === "/room" ? "text-red-600" : ""
 						} mr-10 cursor-pointer hover:text-red-600`}
