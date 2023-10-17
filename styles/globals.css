@@ -134,5 +134,49 @@
 }
 
 body {
-	background-color: rgb(35, 35, 35);
+	/* background-color: rgb(20, 20, 20); */
+	background-color: #202020;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+.animate-btn {
+	animation: btn-animation 500ms ease-in-out forwards;
+}
+@keyframes btn-animation {
+	0% {
+		transform: scale(100%);
+	}
+	30% {
+		transform: scale(80%);
+	}
+	100% {
+		transform: scale(100%);
+	}
+}
+
+.wave {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	overflow: hidden;
+	line-height: 0;
+}
+
+.wave svg {
+	position: relative;
+	display: block;
+	width: calc(140% + 1.3px);
+	height: 150px;
+}
+
+.wave .shape-fill {
+	fill: #202020;
 }
