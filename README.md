@@ -1,38 +1,37 @@
-﻿# WATCH
+# WATCH
 
 Frontend utility/UI project kept as an archive of earlier interface and interaction practice.
 
-## Overview
+## Why This Project Matters
 
-An archived frontend project that captures earlier UI practice and interaction work.
+This repository is kept as part of my portfolio/archive to show progression across frontend, full-stack, UI, and product-building work.
+
+## Highlights
+
+- Small frontend utility project
+- Interface and interaction practice
+- Archive project for progression
+- Simple static-app structure
 
 ## Tech Stack
 
-Frontend web stack
+HTML, CSS, JavaScript, frontend UI
 
-## Features
+## Demo
 
-- Frontend UI practice
-- Responsive layout experiments
-- Utility/project concept screens
+- Demo video: add when available
 
 ## Run Locally
 
-- Install dependencies if present with npm install
-- Run using available package.json scripts, or serve as a static site
+`ash
+npm install
+npm run dev
+`
 
-## Showcase
+For static HTML/CSS projects, open the main index.html file directly or serve the folder with any local static server.
 
-Recommended assets for a stronger portfolio presentation:
+## Portfolio Notes
 
-- Demo video or walkthrough
-- 2-5 screenshots of the main workflow
-- Short architecture/API screenshot where relevant
-
-## Status
-
-Archived frontend/utility project.
-
-## Notes
-
-This repository is maintained as part of a developer portfolio. Secrets and local environment values should stay outside Git and be documented through .env.example files when required.
+- Built/maintained by Aswin Anand.
+- README polished for recruiter/project review.
+- Older projects are preserved as archive proof of frontend progression.
